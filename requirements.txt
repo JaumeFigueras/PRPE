@@ -1,0 +1,14 @@
+# Documentation
+sphinx>=8.2.3
+furo>=2025.7.19
+Pygments>=2.19.2
+# Python libs
+python-dateutil>=2.9.0
+psycopg[binary]>=3.2.9
+pytz>=2025.2
+SQLAlchemy>=2.0.42
+# Testing libs
+pytest>=8.4.1
+pytest-cov>=6.2.1
+pytest-postgresql>=7.0.2
+
