@@ -7,6 +7,10 @@ python-dateutil>=2.9.0
 psycopg[binary]>=3.2.9
 pytz>=2025.2
 SQLAlchemy>=2.0.42
+beautifulsoup4>=4.13.4
+selenium>=4.34.2
+fake-useragent>=2.2.0
+partridge>=1.1.2
 # Testing libs
 pytest>=8.4.1
 pytest-cov>=6.2.1
