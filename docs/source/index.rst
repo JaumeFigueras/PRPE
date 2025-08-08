@@ -3,15 +3,25 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-PRPE documentation
-==================
+PRPE Project Documentation
+==========================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+The "Plataforma de Resposta als Problemes d'Endarreriment" (PRPE) project aims to get the Rodalies RENFE
+and ADIF data of trains, match the information from both providers and compute different ststistics and KPIs
+about the dalys, cancellations an efficiency of the Rodalies de Catalunya commuter network.
 
+The project is organized in different areas:
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    # Data Model: The RENFE GTFS retrieved schedule of the trains, the ADIF real-time data and the different
+      additional information needed to compute the KPIS
+
+    .. toctree::
+       :maxdepth: 1
+       :caption: Contents:
+
+       renfe_gtfs
+
+    # Importing applications: Applications needed to import the GTFS data, the ADIF real-time data
+
+    # KPI applications: ...
 
