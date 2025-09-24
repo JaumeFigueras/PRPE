@@ -219,6 +219,7 @@ class Stop(Base):
     children_stops: Mapped[List[Stop]] = relationship("Stop", back_populates="parent_stop")
     parent_stop: Mapped[Stop] = relationship("Stop", back_populates="children_stops", remote_side=[stop_id])
     level: Mapped["Level"] = relationship(back_populates='stop')
+    urls: Mapped[List["URLScrap"]] = relationship(back_populates="stop")
 
     def __init__(self, **kwargs: Unpack[StopParams]) -> None:
         """
