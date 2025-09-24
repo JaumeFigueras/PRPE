@@ -210,14 +210,14 @@ class Stop(Base):
     zone_id: Mapped[str] = mapped_column('zone_id', String, nullable=True)
     stop_url: Mapped[str] = mapped_column('stop_url', String, nullable=True)
     location_type: Mapped[LocationType] = mapped_column('location_type', Enum(LocationType, name='location_type_enum'), nullable=True)
-    parent_station_id: Mapped[str] = mapped_column('parent_station_id', ForeignKey('stop.stop_id'), nullable=True)
+    parent_stop_id: Mapped[str] = mapped_column('parent_stop_id', ForeignKey('stop.stop_id'), nullable=True)
     stop_timezone: Mapped[str] = mapped_column('stop_timezone', String, nullable=True)
     wheelchair_boarding: Mapped[WheelchairBoarding] = mapped_column('wheelchair_boarding', Enum(WheelchairBoarding, name='wheelchair_boarding_enum'), nullable=True)
     level_id: Mapped[str] = mapped_column('level_id', ForeignKey('level.level_id'), nullable=True)
     platform_code: Mapped[str] = mapped_column('platform_code', String, nullable=True)
 
-    parent_station: Mapped[Stop] = relationship("Stop", back_populates="children_stop", remote_side=[stop_id])
-    children_stop: Mapped[List[Stop]] = relationship("Stop", back_populates="parent_station")
+    children_stops: Mapped[List[Stop]] = relationship("Stop", back_populates="parent_stop")
+    parent_stop: Mapped[Stop] = relationship("Stop", back_populates="children_stops", remote_side=[stop_id])
     level: Mapped["Level"] = relationship(back_populates='stop')
 
     def __init__(self, **kwargs: Unpack[StopParams]) -> None:
