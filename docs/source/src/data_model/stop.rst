@@ -1,4 +1,4 @@
-STOP
+Stop
 ====
 
 In the GTFS (General Transit Feed Specification), ``stops.txt`` defines all the physical locations in

@@ -10,18 +10,20 @@ The "Plataforma de Resposta als Problemes d'Endarreriment" (PRPE) project aims t
 and ADIF data of trains, match the information from both providers and compute different ststistics and KPIs
 about the dalys, cancellations an efficiency of the Rodalies de Catalunya commuter network.
 
-The project is organized in different areas:
+Project Areas
+-------------
 
-    # Data Model: The RENFE GTFS retrieved schedule of the trains, the ADIF real-time data and the different
-      additional information needed to compute the KPIS
+* **Data Model**: The RENFE GTFS retrieved schedule of the trains, the ADIF real-time data and the different
+  additional information needed to compute the KPIS
 
-    .. toctree::
-       :maxdepth: 1
-       :caption: Contents:
+  *Contents*
 
-       renfe_gtfs
+  .. toctree::
+     :maxdepth: 2
 
-    # Importing applications: Applications needed to import the GTFS data, the ADIF real-time data
+     renfe_gtfs
 
-    # KPI applications: ...
+* **Importing applications**: Applications needed to import the GTFS data, the ADIF real-time data
+
+* **KPI applications**: ...
 
