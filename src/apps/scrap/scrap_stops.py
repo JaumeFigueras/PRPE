@@ -5,6 +5,9 @@ import argparse
 import logging
 import sys
 import json
+import heapq
+import datetime
+import time
 
 from pathlib import Path
 from logging.handlers import RotatingFileHandler
@@ -17,11 +20,31 @@ from src.data_model.stop import Stop
 from src.scrap.order import ScrapOrder
 from typing import List
 
+def scrap_stop(order: ScrapOrder) -> ScrapOrder:
+    return ScrapOrder(scheduled_at=order.scheduled_at + datetime.timedelta(seconds=60), stop_id=order.stop_id)
+
 def main(stops_file: str, session: Session, logger: logging.Logger) -> None:
+    queue: List[ScrapOrder] = list()
     stops_to_scrap: List[str] = list()
     with open(stops_file) as file:
         stops_to_scrap: List[str] = json.load(file)
         logger.info(f'Found {len(stops_to_scrap)} Stops to scrap')
+
+    base_time = datetime.datetime.now() + datetime.timedelta(seconds=10)
+    for stop_id in stops_to_scrap:
+        scrap_order = ScrapOrder(scheduled_at=base_time, stop_id=stop_id)
+        heapq.heappush(queue, scrap_order)
+    logger.info(f'Added {len(queue)} new scraping orders')
+
+    while queue:
+        if queue[0].scheduled_at > datetime.datetime.now():
+            logger.info(f'Sleeping for {(queue[0].scheduled_at - datetime.datetime.now()).total_seconds()} seconds')
+            time.sleep((queue[0].scheduled_at - datetime.datetime.now()).total_seconds())
+        order: ScrapOrder = heapq.heappop(queue)
+        logger.info(f'Processing order for {order.stop_id} planned at {order.scheduled_at.strftime("%Y-%m-%d %H:%M:%S")}')
+        next_order = scrap_stop(order)
+        heapq.heappush(queue, next_order)
+        logger.info(f'Added new order for {next_order.stop_id} planned at {next_order.scheduled_at.strftime("%Y-%m-%d %H:%M:%S")}')
 
 
 if __name__ == "__main__":  # pragma: no cover
