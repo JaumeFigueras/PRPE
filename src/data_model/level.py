@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String
 from sqlalchemy import Float
 from sqlalchemy.orm import mapped_column
 
