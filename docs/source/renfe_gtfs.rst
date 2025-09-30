@@ -9,3 +9,4 @@ SQLAlchemy wrapper to model the needed data from RENFE
 
    src/data_model/stop
    src/data_model/level
+   src/data_model/url_scrap
