@@ -16,6 +16,6 @@ if __name__ == "__main__":
     options.add_argument(f'user-agent={ua.random}')
     driver = webdriver.Chrome(options=options)
     driver.get(URL)
-    with open('granillers.html', 'w') as file:
+    with open('granollers.html', 'w') as file:
         file.write(driver.page_source)
     driver.quit()
