@@ -38,6 +38,7 @@ from sqlalchemy.schema import CreateTable  # pragma: no cover
 from src.data_model import Base  # pragma: no cover
 from src.data_model.stop import Stop
 from src.data_model.level import Level
+from src.data_model.url_scrap import URLScrap
 
 def main(e: Engine):  # pragma: no cover
     """
@@ -58,6 +59,7 @@ def main(e: Engine):  # pragma: no cover
     # Base.metadata.create_all(e)
     print(CreateTable(Stop.__table__).compile(e))
     print(CreateTable(Level.__table__).compile(e))
+    print(CreateTable(URLScrap.__table__).compile(e))
 
 
 if __name__ == "__main__":  # pragma: no cover
