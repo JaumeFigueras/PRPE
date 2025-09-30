@@ -2,116 +2,116 @@
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/72400-aeroport",
-    "stop_id": "72400"
+    "stop": "72400"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/71707-el-prat-llobregat",
-    "stop_id": "71707"
+    "stop": "71707"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/71708-bellvitge-gornal",
-    "stop_id": "71708"
+    "stop": "71708"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/71801-barcelona-sants",
-    "stop_id": "71801"
+    "stop": "71801"
   },
   {
     "url_type": "ADIF_JS_INFO",
     "url": "https://info.adif.es/?s=71801",
-    "stop_id": "71801"
+    "stop": "71801"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/71802-barcelona-p.gr%C3%A0cia",
-    "stop_id": "71802"
+    "stop": "71802"
   },
   {
     "url_type": "ADIF_JS_INFO",
     "url": "https://info.adif.es/?s=71802",
-    "stop_id": "71802"
+    "stop": "71802"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79009-barcelona-el-clot",
-    "stop_id": "79009"
+    "stop": "79009"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79004-barcelona-st.andreu",
-    "stop_id": "79004"
+    "stop": "79004"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79005-montcada-i-reixac",
-    "stop_id": "79005"
+    "stop": "79005"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79011-la-llagosta",
-    "stop_id": "79011"
+    "stop": "79011"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79006-mollet-sant-fost",
-    "stop_id": "79006"
+    "stop": "79006"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79007-montmel%C3%B3",
-    "stop_id": "79007"
+    "stop": "79007"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79100-granollers-centre",
-    "stop_id": "79100"
+    "stop": "79100"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79109-les-franqueses-g.n",
-    "stop_id": "79109"
+    "stop": "79109"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79101-cardedeu",
-    "stop_id": "79101"
+    "stop": "79101"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79102-llinars-vall%C3%A8s",
-    "stop_id": "79102"
+    "stop": "79102"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79103-palautordera",
-    "stop_id": "79103"
+    "stop": "79103"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79104-sant-celoni",
-    "stop_id": "79104"
+    "stop": "79104"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79105-gualba",
-    "stop_id": "79105"
+    "stop": "79105"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79106-riells-viabr.breda",
-    "stop_id": "79106"
+    "stop": "79106"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79107-hostalric",
-    "stop_id": "79107"
+    "stop": "79107"
   },
   {
     "url_type": "ADIF_WEB",
     "url": "https://www.adif.es/w/79200-ma%C3%A7anet-massanes",
-    "stop_id": "79200"
+    "stop": "79200"
   }
 ]
