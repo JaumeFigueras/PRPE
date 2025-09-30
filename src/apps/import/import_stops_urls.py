@@ -76,8 +76,7 @@ if __name__ == "__main__":  # pragma: no cover
             datefmt="%Y-%m-%d %H:%M:%S"
         )
 
-    # Read the GTFS file with exception handling
-    # noinspection PyBroadException
+    # Check existence of the urls file
     url_file_path = Path(args.url_file)
     if not url_file_path.exists():
         logger_main.error(f"JSON URLs file not found: {args.url_file}")
