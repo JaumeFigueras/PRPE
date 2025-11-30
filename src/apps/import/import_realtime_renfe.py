@@ -102,13 +102,13 @@ def download_json(url: str, save_dir: str, logger: Logger, max_attempts: int = 5
     return False
 
 
-def main(argv=None):
+if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser(description="Download M2M JSON using fake-useragent randomized User-Agent and save it as a UTC-timestamped renfe.json in the provided directory.")
     parser.add_argument("-u", "--url", help="URL of the JSON resource to download.")
     parser.add_argument("-d", "--directory", help="Directory where the timestamped renfe.json will be saved.")
     parser.add_argument("-a", "--attempts", type=int, default=5, help="Maximum download attempts")
     parser.add_argument('-l', '--log-file', help='File to log progress or errors', required=False)
-    args = parser.parse_args(argv)
+    args = parser.parse_args()
 
     # Set up the Logger
     logger_main = logging.getLogger(__name__)
@@ -137,7 +137,3 @@ def main(argv=None):
     success = download_json(url=args.url, save_dir=args.directory, max_attempts=args.attempts, logger=logger_main)
     if not success:
         sys.exit(2)
-
-
-if __name__ == "__main__":
-    main()
