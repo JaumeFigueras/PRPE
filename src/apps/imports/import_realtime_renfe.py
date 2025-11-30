@@ -49,7 +49,10 @@ def save_json_to_file(data, directory: str):
     Save `data` to a UTC timestamped filename in `directory`.
     Filename format: YYYY-MM-DD-HH-MM-SS_renfe.json (UTC)
     """
-    ts = datetime.datetime.now(ZoneInfo("UTC")).strftime("%Y-%m-%d-%H-%M-%S")
+    current_time = datetime.datetime.now(ZoneInfo("UTC"))
+    ts = current_time.strftime("%Y-%m-%d-%H-%M-%S")
+    day = current_time.strftime("%Y-%m-%d")
+    directory = os.path.join(directory, day)
     filename = f"{ts}-renfe.json"
     os.makedirs(directory, exist_ok=True)
     path = os.path.join(directory, filename)
