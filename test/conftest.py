@@ -48,7 +48,6 @@ SQL files stored in the data model
 
 
 pytest_plugins = [
-    'test.fixtures.database',
 ]
 
 """
