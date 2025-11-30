@@ -15,4 +15,6 @@ partridge>=1.1.2
 pytest>=8.4.1
 pytest-cov>=6.2.1
 pytest-postgresql>=7.0.2
+requests-mock>=1.12.1
+
 
