@@ -34,6 +34,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Tuple
+from logging.handlers import RotatingFileHandler
 
 import requests
 from fake_useragent import UserAgent  # type: ignore
@@ -65,7 +66,7 @@ def sha256_file(path: str, chunk_size: int = 8 * 1024 * 1024) -> str:
     return h.hexdigest()
 
 
-def stream_download(url: str, out_path: str, chunk_size: int, max_attempts: int, logger: Logger) -> bool:
+def stream_download(url: str, out_path: str, max_attempts: int, logger: Logger) -> bool:
     """
     Stream download with resume support:
     - If <final_path>.partial exists, resume from its size.
@@ -77,6 +78,8 @@ def stream_download(url: str, out_path: str, chunk_size: int, max_attempts: int,
       For example, if out_path=/tmp/gtfs/gtfs.zip and now is 2025-11-30,
       the file will be saved as /tmp/gtfs/2025-11-30/2025-11-30_gtfs.zip.
     """
+    chunk_size=2048
+
     # Derive dated directory and date-based filename
     now = datetime.now()
     date_dir = now.strftime("%Y-%m-%d")
@@ -86,7 +89,7 @@ def stream_download(url: str, out_path: str, chunk_size: int, max_attempts: int,
     base_name = os.path.basename(out_path)
 
     dated_dir = os.path.join(base_dir, date_dir)
-    final_out_path = os.path.join(dated_dir, f"{date_name}_{base_name}")
+    final_out_path = os.path.join(dated_dir, f"{date_name}-{base_name}")
 
     ua = UserAgent()
     headers = build_headers(ua)
@@ -119,7 +122,7 @@ def stream_download(url: str, out_path: str, chunk_size: int, max_attempts: int,
 
         start_time = time.time()
         try:
-            with requests.get(url, headers=req_headers, stream=True, timeout=(10, 60), verify=verify_tls) as resp:
+            with requests.get(url, headers=req_headers, stream=True, timeout=(10, 60)) as resp:
                 status = resp.status_code
                 # Status handling:
                 # 200 OK for full download; 206 Partial Content for resume
@@ -246,14 +249,14 @@ def compare_today_with_previous_day_checksum(out_base_path: str) -> Tuple[bool, 
     yesterday_file = find_latest_file_in_dir(yesterday_dir, base_name)
 
     if not today_file or not yesterday_file:
-        return (False, today_file, yesterday_file)
+        return False, today_file, yesterday_file
 
     try:
         hash_today = sha256_file(today_file)
         hash_yesterday = sha256_file(yesterday_file)
-        return (hash_today == hash_yesterday, today_file, yesterday_file)
+        return hash_today == hash_yesterday, today_file, yesterday_file
     except OSError:
-        return (False, today_file, yesterday_file)
+        return False, today_file, yesterday_file
 
 
 def deduplicate_today_with_symlink(today_file: str, yesterday_file: str, logger: logging.Logger) -> bool:
@@ -289,41 +292,54 @@ def deduplicate_today_with_symlink(today_file: str, yesterday_file: str, logger:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Stream download a large GTFS file with resume support.")
     parser.add_argument("-u", "--url", required=True, help="GTFS file URL (e.g., https://example.com/gtfs.zip)")
-    parser.add_argument("-o", "--out", required=True, help="Destination base file path (e.g., /tmp/gtfs/gtfs.zip)")
+    parser.add_argument("-d", "--directory", help="Directory where the timestamped renfe.json will be saved.")
     parser.add_argument("-a", "--attempts", type=int, default=5, help="Maximum attempts (default: 5)")
-    parser.add_argument("--chunk-size", type=int, default=4 * 1024 * 1024, help="Chunk size in bytes (default: 4MB)")
-    parser.add_argument("--insecure", action="store_true", help="Disable TLS verification")
-    parser.add_argument("--verbose", action="store_true", help="Enable info-level logging")
-    parser.add_argument("--compare", action="store_true", help="After download, compare today's latest file with yesterday's latest via checksum and deduplicate with a symlink")
+    parser.add_argument('-l', '--log-file', help='File to log progress or errors', required=False)
     args = parser.parse_args(argv)
 
-    logging.basicConfig(
-        level=logging.INFO if args.verbose else logging.WARNING,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-    )
-    logger = logging.getLogger("gtfs_downloader")
+    # Set up the Logger
+    logger_main = logging.getLogger(__name__)
+    if args.log_file is not None:
+        handler = RotatingFileHandler(args.log_file, mode='a', maxBytes=5*1024*1024, backupCount=15, encoding='utf-8', delay=False)
+        logging.basicConfig(
+            format='%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s',
+            handlers=[handler],
+            encoding='utf-8',
+            level=logging.DEBUG,
+            datefmt="%Y-%m-%d %H:%M:%S"
+        )
+    else:
+        handler = logging.StreamHandler()
+        logging.basicConfig(
+            format='%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s',
+            handlers=[handler],
+            encoding='utf-8',
+            level=logging.DEBUG,
+            datefmt="%Y-%m-%d %H:%M:%S"
+        )
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("httpcore").setLevel(logging.WARNING)  # si uses httpx
+    logging.getLogger("asyncio").setLevel(logging.ERROR)
 
     ok = stream_download(
         url=args.url,
-        out_path=args.out,
-        chunk_size=args.chunk_size,
+        out_path=args.directory,
         max_attempts=args.attempts,
-        verify_tls=not args.insecure,
-        logger=logger,
+        logger=logger_main,
     )
     if not ok:
         return 2
 
-    if args.compare:
-        same, today_fp, yest_fp = compare_today_with_previous_day_checksum(args.out)
-        if same and today_fp and yest_fp:
-            logger.info(f"Today's file is identical to yesterday's (SHA256 match): {today_fp} == {yest_fp}")
-            if deduplicate_today_with_symlink(today_fp, yest_fp, logger):
-                logger.info("Deduplication successful: today's file replaced with symlink to yesterday's.")
-            else:
-                logger.warning("Deduplication attempted but failed.")
-        else:
-            logger.info(f"Today's file differs from yesterday's or missing. Today: {today_fp}, Yesterday: {yest_fp}")
+    # TODO
+    # same, today_fp, yest_fp = compare_today_with_previous_day_checksum(args.directory)
+    # if same and today_fp and yest_fp:
+    #     logger_main.info(f"Today's file is identical to yesterday's (SHA256 match): {today_fp} == {yest_fp}")
+    #     if deduplicate_today_with_symlink(today_fp, yest_fp, logger_main):
+    #         logger_main.info("Deduplication successful: today's file replaced with symlink to yesterday's.")
+    #     else:
+    #         logger_main.warning("Deduplication attempted but failed.")
+    # else:
+    #     logger_main.info(f"Today's file differs from yesterday's or missing. Today: {today_fp}, Yesterday: {yest_fp}")
 
     return 0
 
