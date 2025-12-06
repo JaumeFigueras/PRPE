@@ -11,12 +11,12 @@ set -euo pipefail
 
 # Config
 VENV_PY="/home/prpe/soft/PRPE/.venv/bin/python"
-TARGET_DIR="/home/prpe/data/realtime"
-DEFAULT_URL="https://gtfsrt.renfe.com/vehicle_positions.json"
+TARGET_DIR="/home/prpe/data/gtfs"
+DEFAULT_URL="https://ssl.renfe.com/ftransit/Fichero_CER_FOMENTO/fomento_transit.zip"
 REPO_ROOT="/home/prpe/soft/PRPE"
 
 # Path to the import script relative to repo root
-IMPORT_SCRIPT="${REPO_ROOT}/src/apps/imports/import_realtime_renfe.py"
+IMPORT_SCRIPT="${REPO_ROOT}/src/apps/imports/import_gtfs_renfe.py"
 
 # URL argument or default
 URL="${1:-$DEFAULT_URL}"
@@ -36,7 +36,7 @@ fi
 mkdir -p "$TARGET_DIR"
 
 # Optional: set a log file in /tmp (rotating handled by script when -l is used)
-LOG_FILE="/home/prpe/logs/realtime_renfe.log"
+LOG_FILE="/home/prpe/logs/gtfs_renfe.log"
 
 # Execute the import script
 # -u URL
