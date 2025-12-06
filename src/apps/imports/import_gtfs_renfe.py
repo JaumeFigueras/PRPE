@@ -85,11 +85,10 @@ def stream_download(url: str, out_path: str, max_attempts: int, logger: Logger) 
     date_dir = now.strftime("%Y-%m-%d")
     date_name = now.strftime("%Y-%m-%d")
 
-    base_dir = os.path.dirname(out_path)
-    base_name = os.path.basename(out_path)
+    base_dir = os.path.join(out_path, date_dir)
 
     dated_dir = os.path.join(base_dir, date_dir)
-    final_out_path = os.path.join(dated_dir, f"{date_name}-{base_name}")
+    final_out_path = os.path.join(dated_dir, f"{date_name}-{date_name}-renfe.zip")
 
     ua = UserAgent()
     headers = build_headers(ua)
